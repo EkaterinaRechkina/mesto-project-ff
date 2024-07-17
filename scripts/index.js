@@ -25,5 +25,5 @@ initialCards.forEach((item) => cardPlace.append(createCard(item, deleteCard)));
 // @todo: Функция удаления карточки
 
 function deleteCard(evt) {
-  evt.target.parentNode.remove();
+  evt.target.closest('.card').remove();
 }
