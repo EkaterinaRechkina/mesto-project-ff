@@ -78,6 +78,14 @@ element.addEventListener('click',function(){
 })
 
 
+//Close by overlay
+window.onclick = (evt) => {
+    if(!evt.target.matches('.popup__content')){
+        closeModal(evt.target)
+    }
+}
+
+
 // LIKE IS NOT WORKING
 
 function isLiked(like){
