@@ -6,7 +6,7 @@ import { openModal, closeModal } from "./modal";
 const cardtemplate = document.querySelector("#card-template").content;
 const cardPlace = document.querySelector(".places__list");
 const popupCard = document.querySelector(".popup_type_image");
-const popup = document.querySelector('.popup');
+const popup = document.querySelectorAll('.popup');
 const popupClose = document.querySelectorAll('.popup__close')
 
 //PROFILE
@@ -78,12 +78,16 @@ element.addEventListener('click',function(){
 })
 
 
-//Close by overlay
-window.onclick = (evt) => {
-    if(!evt.target.matches('.popup__content')){
-        closeModal(evt.target)
-    }
-}
+//Close by overlay 
+
+popup.forEach((element) => {
+    element.addEventListener('click', function(evt){
+        if(!evt.target.matches('.popup__content')){
+            closeModal(evt.target)
+        }
+    })
+})
+
 
 
 // LIKE IS NOT WORKING
