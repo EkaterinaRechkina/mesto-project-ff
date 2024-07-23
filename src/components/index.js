@@ -1,13 +1,17 @@
 import "../pages/index.css";
-import { createCard, deleteCard } from "./card";
+import {
+  createCard,
+  deleteCard,
+  handleFormSubmitCard,
+  popupAddNewCard
+} from "./card";
 import { initialCards } from "./cards";
 import { openModal, closeModal } from "./modal";
 
 const cardtemplate = document.querySelector("#card-template").content;
 const cardPlace = document.querySelector(".places__list");
-const popupCard = document.querySelector(".popup_type_image");
-const popup = document.querySelectorAll('.popup');
-const popupClose = document.querySelectorAll('.popup__close')
+
+const popupClose = document.querySelectorAll(".popup__close");
 
 //PROFILE
 const popupProfileEdit = document.querySelector(".popup_type_edit");
@@ -20,19 +24,18 @@ const inputProfileDescription = profileEditForm.elements.description;
 
 //AddCard
 const cardAddBtn = document.querySelector(".profile__add-button");
-const popupAddNewCard = document.querySelector(".popup_type_new-card");
 const cardAddForm = document.forms["new-place"];
-const cardPlaceName= cardAddForm.elements['place-name'];
-const cardLink = cardAddForm.elements.link;
-
-
-// Like
-const likeBtn = cardtemplate.querySelectorAll('.card__like-button');
-
-
+const popupCard = document.querySelector(".popup_type_image");
+const cardImg = document.querySelector(".card__image");
+const cardTitle = document.querySelector(".card__title");
+const popupImg = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__caption");
 
 // @todo: Вывести карточки на страницу
-initialCards.forEach((item) => cardPlace.append(createCard(item, deleteCard)));
+initialCards.forEach(
+  (item) => cardPlace.append(createCard(item, deleteCard)), handleFormSubmitCard
+ 
+);
 
 profileEditBtn.addEventListener("click", function (evt) {
   evt.preventDefault();
@@ -47,6 +50,8 @@ cardAddBtn.addEventListener("click", function (evt) {
 });
 
 function imageHandler(el) {
+  popupImg.src = cardImg.src;
+  popupCaption.textContent = cardTitle.textContent;
   openModal(popupCard);
 }
 
@@ -56,53 +61,19 @@ function profileHandler(evt) {
   const jobInput = inputProfileDescription.value;
   profileTitle.textContent = nameInput;
   profileDescription.textContent = jobInput;
-  closeModal(popupProfileEdit)
-}
-
-function cardHadler(){
-    evt.preventDefault();
-    
-    closeModal(popupAddNewCard)
+  closeModal(popupProfileEdit);
 }
 
 
 profileEditForm.addEventListener("submit", profileHandler);
-cardAddForm.addEventListener("submit", cardHadler);
-
 
 popupClose.forEach((element) => {
-element.addEventListener('click',function(){
-    const closestPopup = element.closest('.popup');
-        closeModal(closestPopup)
-    })
-})
+  element.addEventListener("click", function () {
+    const closestPopup = element.closest(".popup");
+    closeModal(closestPopup);
+  });
+});
 
-
-//Close by overlay 
-
-popup.forEach((element) => {
-    element.addEventListener('click', function(evt){
-        if(!evt.target.matches('.popup__content')){
-            closeModal(evt.target)
-        }
-    })
-})
-
-
-
-// LIKE IS NOT WORKING
-
-function isLiked(like){
-    console.log('TESSSSSSSSSSS')
-    return like.classList.add('.card__like-button_is-active');
-}
-
-likeBtn.forEach((element)=> {
-    element.addEventListener('click', function(){
-        const card = element.closest('.card');
-        isLiked(card)
-    })
-})
-
+cardAddForm.addEventListener("submit", handleFormSubmitCard);
 
 export { cardtemplate };
