@@ -1,19 +1,18 @@
-import { cardtemplate } from "./index";
-import { openModal } from "./modal";
+const cardtemplate = document.querySelector("#card-template").content;
 
-function createCard(el, deleteCard, liked, open) {
+function createCard(newCard, {deleteCard, likedCard, openCard}) {
   const card = cardtemplate.querySelector(".card").cloneNode(true);
   const cardDeleteBtn = card.querySelector(".card__delete-button");
   const cardImg = card.querySelector(".card__image");
   const cardTitle = card.querySelector(".card__title");
   const cardLikeBtn = card.querySelector(".card__like-button");
 
-  cardTitle.textContent = el.name;
-  cardImg.src = el.link;
-  cardImg.alt = el.name;
+  cardTitle.textContent = newCard.name;
+  cardImg.src = newCard.link;
+  cardImg.alt = newCard.name;
   cardDeleteBtn.addEventListener("click", deleteCard);
-  cardLikeBtn.addEventListener("click", liked);
-  cardImg.addEventListener("click", open);
+  cardLikeBtn.addEventListener("click", likedCard);
+  cardImg.addEventListener("click", () => openCard(newCard));
 
   return card;
 }
@@ -24,22 +23,11 @@ function deleteCard(evt) {
   evt.target.closest(".card").remove();
 }
 
-// LIKE 
+// LIKE
 
 function isLiked(evt) {
+    console.log(evt.target);
   evt.target.classList.toggle("card__like-button_is-active");
 }
 
-//OPEN CARD
-const popupCard = document.querySelector(".popup_type_image");
-const popupImg = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
-
-function openCard(evt) {
-  popupImg.src = evt.target.src;
-  popupImg.alt = evt.target.alt;
-  popupCaption.textContent = evt.target.alt;
-  openModal(popupCard);
-}
-
-export { createCard, deleteCard, isLiked, openCard };
+export { createCard, deleteCard, isLiked, cardtemplate };
