@@ -113,4 +113,3 @@ popupList.forEach((element) => {
   });
 });
 
-export { cardtemplate };
