@@ -28,10 +28,14 @@ const popupInputCardName = document.querySelector(
 const popupInputCardLink = document.querySelector(".popup__input_type_url");
 const popupAddNewCard = document.querySelector(".popup_type_new-card");
 
+const newCardObj = {
+  deleteCard,
+  isLiked,
+  openCard,
+};
+
 // Вывести карточки на страницу
-initialCards.forEach((item) =>
-  cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
-);
+initialCards.forEach((item) => cardPlace.append(createCard(item, newCardObj)));
 
 // Добавляем новую карточку
 
@@ -42,7 +46,7 @@ function createNewCard(evt) {
     link: popupInputCardLink.value,
   };
 
-  const newCard = createCard(newCardEl, deleteCard, isLiked, openCard);
+  const newCard = createCard(newCardEl, newCardObj);
   cardPlace.prepend(newCard);
   closeModal(popupAddNewCard);
   evt.target.reset();
@@ -112,4 +116,3 @@ popupList.forEach((element) => {
     }
   });
 });
-

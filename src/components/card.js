@@ -1,6 +1,6 @@
 const cardtemplate = document.querySelector("#card-template").content;
 
-function createCard(newCard, deleteCard, likedCard, openCard) {
+function createCard(newCard, { deleteCard, likedCard, openCard }) {
   const card = cardtemplate.querySelector(".card").cloneNode(true);
   const cardDeleteBtn = card.querySelector(".card__delete-button");
   const cardImg = card.querySelector(".card__image");
