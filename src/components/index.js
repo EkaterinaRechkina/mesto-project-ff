@@ -1,16 +1,10 @@
 import "../pages/index.css";
-import {
-  createCard,
-  deleteCard,
-  handleFormSubmitCard,
-  popupAddNewCard
-} from "./card";
+import { createCard, deleteCard, isLiked, openCard } from "./card";
 import { initialCards } from "./cards";
 import { openModal, closeModal } from "./modal";
 
 const cardtemplate = document.querySelector("#card-template").content;
 const cardPlace = document.querySelector(".places__list");
-
 const popupClose = document.querySelectorAll(".popup__close");
 
 //PROFILE
@@ -25,17 +19,38 @@ const inputProfileDescription = profileEditForm.elements.description;
 //AddCard
 const cardAddBtn = document.querySelector(".profile__add-button");
 const cardAddForm = document.forms["new-place"];
-const popupCard = document.querySelector(".popup_type_image");
-const cardImg = document.querySelector(".card__image");
-const cardTitle = document.querySelector(".card__title");
-const popupImg = document.querySelector(".popup__image");
-const popupCaption = document.querySelector(".popup__caption");
+const popupInputCardName = document.querySelector(
+  ".popup__input_type_card-name"
+);
+const popupInputCardLink = document.querySelector(".popup__input_type_url");
+const popupAddNewCard = document.querySelector(".popup_type_new-card");
 
 // @todo: Вывести карточки на страницу
-initialCards.forEach(
-  (item) => cardPlace.append(createCard(item, deleteCard)), handleFormSubmitCard
- 
+initialCards.forEach((item) =>
+  cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
 );
+
+// Добавляем карточку
+
+function createNewCard(evt) {
+  evt.preventDefault();
+
+  console.log("CREATE");
+
+  const newCardEl = {
+    name: popupInputCardName.value,
+    link: popupInputCardLink.value,
+  };
+
+  const newCard = createCard(newCardEl, deleteCard, isLiked, openCard);
+  cardPlace.prepend(newCard);
+  closeModal(popupAddNewCard);
+  evt.target.reset();
+}
+
+cardAddForm.addEventListener("submit", createNewCard);
+
+//Открываем модальное окно для редактирования профиля
 
 profileEditBtn.addEventListener("click", function (evt) {
   evt.preventDefault();
@@ -44,16 +59,14 @@ profileEditBtn.addEventListener("click", function (evt) {
   openModal(popupProfileEdit);
 });
 
+// Открываем модальное окно для добавления карточки
+
 cardAddBtn.addEventListener("click", function (evt) {
   evt.preventDefault;
   openModal(popupAddNewCard);
 });
 
-function imageHandler(el) {
-  popupImg.src = cardImg.src;
-  popupCaption.textContent = cardTitle.textContent;
-  openModal(popupCard);
-}
+// Обновление информации в профиле и закрытие модального окна
 
 function profileHandler(evt) {
   evt.preventDefault();
@@ -64,7 +77,6 @@ function profileHandler(evt) {
   closeModal(popupProfileEdit);
 }
 
-
 profileEditForm.addEventListener("submit", profileHandler);
 
 popupClose.forEach((element) => {
@@ -73,7 +85,5 @@ popupClose.forEach((element) => {
     closeModal(closestPopup);
   });
 });
-
-cardAddForm.addEventListener("submit", handleFormSubmitCard);
 
 export { cardtemplate };

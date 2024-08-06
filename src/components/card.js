@@ -1,15 +1,20 @@
 import { cardtemplate } from "./index";
-import { closeModal } from "./modal";
+import { openModal } from "./modal";
 
-function createCard(el, deleteCard) {
+function createCard(el, deleteCard, liked, open) {
   const card = cardtemplate.querySelector(".card").cloneNode(true);
   const cardDeleteBtn = card.querySelector(".card__delete-button");
   const cardImg = card.querySelector(".card__image");
   const cardTitle = card.querySelector(".card__title");
+  const cardLikeBtn = card.querySelector(".card__like-button");
+
   cardTitle.textContent = el.name;
   cardImg.src = el.link;
   cardImg.alt = el.name;
   cardDeleteBtn.addEventListener("click", deleteCard);
+  cardLikeBtn.addEventListener("click", liked);
+  cardImg.addEventListener("click", open);
+
   return card;
 }
 
@@ -19,29 +24,22 @@ function deleteCard(evt) {
   evt.target.closest(".card").remove();
 }
 
-// LIKE IS NOT WORKING
+// LIKE 
 
-function isLiked(like) {
-  like.classList.toggle(".card__like-button_is-active");
+function isLiked(evt) {
+  evt.target.classList.toggle("card__like-button_is-active");
 }
 
-//ADD CARD
+//OPEN CARD
+const popupCard = document.querySelector(".popup_type_image");
+const popupImg = document.querySelector(".popup__image");
+const popupCaption = document.querySelector(".popup__caption");
 
-const cardAddForm = document.forms["new-place"];
-const cardPlaceName = cardAddForm.elements["place-name"];
-const cardLink = cardAddForm.elements.link;
-const popupAddNewCard = document.querySelector(".popup_type_new-card");
-
-function handleFormSubmitCard(evt) {
-  evt.preventDefault();
-  const place = cardPlaceName.value;
-  const link = cardLink.value;
-  const cardImg = document.querySelector(".card__image");
-  const cardTitle = document.querySelector(".card__title");
-  cardImg.src = link;
-  cardTitle.textContent = place;
-  closeModal(popupAddNewCard)
+function openCard(evt) {
+  popupImg.src = evt.target.src;
+  popupImg.alt = evt.target.alt;
+  popupCaption.textContent = evt.target.alt;
+  openModal(popupCard);
 }
 
-
-export { createCard, deleteCard,handleFormSubmitCard,popupAddNewCard };
+export { createCard, deleteCard, isLiked, openCard };

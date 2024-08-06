@@ -20,6 +20,7 @@ popup.forEach((element) => {
 
 function openModal(element) {
   element.classList.add("popup_is-opened");
+  element.classList.add("popup_is-animated");
   document.addEventListener("keydown", closePopupEsc);
 }
 
