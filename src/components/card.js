@@ -1,6 +1,6 @@
 const cardtemplate = document.querySelector("#card-template").content;
 
-function createCard(newCard, {deleteCard, likedCard, openCard}) {
+function createCard(newCard, deleteCard, likedCard, openCard) {
   const card = cardtemplate.querySelector(".card").cloneNode(true);
   const cardDeleteBtn = card.querySelector(".card__delete-button");
   const cardImg = card.querySelector(".card__image");
@@ -26,7 +26,6 @@ function deleteCard(evt) {
 // LIKE
 
 function isLiked(evt) {
-    console.log(evt.target);
   evt.target.classList.toggle("card__like-button_is-active");
 }
 
