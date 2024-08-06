@@ -3,7 +3,6 @@ const popup = document.querySelectorAll(".popup");
 function closePopupEsc(evt) {
   const openPopup = document.querySelector(".popup_is-opened");
   if (evt.key === "Esc" || evt.key === "Escape") {
-    console.log("ESC");
     closeModal(openPopup);
   }
 }
