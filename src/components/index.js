@@ -2,6 +2,7 @@ import "../pages/index.css";
 import { createCard, deleteCard, isLiked, cardtemplate } from "./card";
 import { initialCards } from "./cards";
 import { openModal, closeModal } from "./modal";
+import { enableValidation } from "./validation";
 
 const cardPlace = document.querySelector(".places__list");
 const popupCloseList = document.querySelectorAll(".popup__close");
@@ -113,3 +114,12 @@ popupList.forEach((element) => {
   });
 });
 
+//Валидация
+
+
+
+enableValidation();
+
+// очистка ошибок валидации вызовом clearValidation
+
+// clearValidation(profileForm, validationConfig); 
