@@ -16,7 +16,6 @@ const showInputError = (formElement, inputElement, errorMessage) => {
   inputElement.classList.add("popup_input_type_error");
   errorElement.textContent = errorMessage;
   errorElement.classList.add('popup__error_visible');
-  console.log(errorMessage)
 };
 
 const hideInputError = (formElement, inputElement) => {
@@ -28,7 +27,7 @@ const hideInputError = (formElement, inputElement) => {
 
 const isValid = (formElement, inputElement) => {
   if (inputElement.validity.patternMismatch) {
-    inputElement.dataset.errorMessage;
+    inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
     inputElement.setCustomValidity("");
   }
@@ -76,4 +75,10 @@ const toggleButtonState = (inputList, buttonElement) => {
   }
 };
 
-export {enableValidation}
+
+// очистка ошибок валидации вызовом clearValidation
+
+const clearValidation =()=> {}
+
+
+export {enableValidation, clearValidation};
