@@ -74,10 +74,12 @@ function openCard(card) {
 //Открываем модальное окно для редактирования профиля
 
 profileEditBtn.addEventListener("click", function (evt) {
+  clearValidation(profileEditForm);
   evt.preventDefault();
   inputProfileName.value = profileTitle.textContent;
   inputProfileDescription.value = profileDescription.textContent;
   openModal(popupProfileEdit);
+
 });
 
 //Редактирование профиля
@@ -88,6 +90,10 @@ profileEditForm.addEventListener("submit", profileHandler);
 
 cardAddBtn.addEventListener("click", function (evt) {
   evt.preventDefault;
+  clearValidation(cardAddForm);
+  // popupImg.src = card.link;
+  // popupImg.alt = card.name;
+  // popupCaptionCard.textContent = card.name;
   openModal(popupAddNewCard);
 });
 
@@ -101,6 +107,7 @@ popupCloseList.forEach((element) => {
   element.addEventListener("click", function () {
     const closestPopup = element.closest(".popup");
     closeModal(closestPopup);
+
   });
 });
 
@@ -119,7 +126,3 @@ popupList.forEach((element) => {
 
 
 enableValidation();
-
-// очистка ошибок валидации вызовом clearValidation
-
-//  clearValidation(profileForm, validationConfig); 
