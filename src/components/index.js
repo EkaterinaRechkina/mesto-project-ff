@@ -91,9 +91,8 @@ profileEditForm.addEventListener("submit", profileHandler);
 cardAddBtn.addEventListener("click", function (evt) {
   evt.preventDefault;
   clearValidation(cardAddForm);
-  // popupImg.src = card.link;
-  // popupImg.alt = card.name;
-  // popupCaptionCard.textContent = card.name;
+  popupInputCardName.value = '';
+  popupInputCardLink.value = '';
   openModal(popupAddNewCard);
 });
 
