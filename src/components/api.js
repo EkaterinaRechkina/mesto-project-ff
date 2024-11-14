@@ -9,15 +9,6 @@ const cohort = "pwff-cohort-1";
 //     }
 //   }
 
-const profileTitle = document.querySelector(".profile__title");
-const profileDescription = document.querySelector(".profile__description");
-const avatar = document.querySelector(".profile__image");
-const cardPlace = document.querySelector(".places__list");
-// Вывести карточки на страницу
-// initialCards.forEach((item) =>
-//     cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
-//   );
-
 const getUserData = () => {
   return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me", {
     method: "GET",
@@ -25,14 +16,21 @@ const getUserData = () => {
       authorization: token,
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      profileTitle.textContent = data.name;
-      profileDescription.textContent = data.about;
-      avatar.src = data.avatar;
-    })
-    .catch((err) => console.log(err));
+  });
+};
+
+const editProfile = (name, job) => {
+  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me ", {
+    method: "PATCH",
+    headers: {
+      authorization: token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      about: job,
+    }),
+  });
 };
 
 const initialCardsRender = () => {
@@ -42,42 +40,71 @@ const initialCardsRender = () => {
       authorization: token,
       "Content-Type": "application/json",
     },
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((err) => console.log(err));
+  });
 };
 
-const editProfile = () => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me ", {
+const addNewCard = (name, link) => {
+  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/cards", {
     method: "POST",
     headers: {
       authorization: token,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      name: "Marie Skłodowska Curie",
-      about: "Physicist and Chemist",
+      name: name,
+      link: link,
     }),
   });
 };
 
 
-const addNewCard =() => {
-    return fetch('https://nomoreparties.co/v1/cohortId/cards', {
-        method: 'POST',
+const deleteMyCard = (cardId) => {
+    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/${cardId}`,{
+        method: 'DELETE',
         headers: {
             authorization: token,
             "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            name: 'test',
-            link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg"
-        })
+          },
     })
 }
 
 
-export { getUserData, initialCardsRender, editProfile, addNewCard };
+const putLike = (cardId) => {
+    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+        method: 'PUT',
+        headers: {
+            authorization: token,
+            "Content-Type": "application/json",
+          },
+    })
+}
+
+
+const deleteLike = (cardId) => {
+    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+        method: 'DELETE',
+        headers: {
+            authorization: token,
+            "Content-Type": "application/json",
+          },
+    })
+}
+
+
+const updateUserAvatar = (link) => {
+    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/users/me/avatar`, {
+        method: 'PATCH',
+        headers: {
+            authorization: token,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            avatar: link,
+          }),
+    })
+}
+
+
+
+
+export { getUserData, initialCardsRender, editProfile, addNewCard, deleteMyCard, putLike, deleteLike, updateUserAvatar };

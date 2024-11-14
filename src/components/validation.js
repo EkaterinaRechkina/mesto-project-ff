@@ -87,13 +87,10 @@ const toggleButtonState = (inputList, buttonElement) => {
 const clearValidation = (formElement) => {
   const inputList = Array.from(formElement.querySelectorAll(".popup__input"));
   const buttonElement = formElement.querySelector(".popup__button");
-  console.log(buttonElement);
   inputList.forEach((input) => {
     hideInputError(formElement, input);
   });
 
-  // buttonElement.disabled = true;
-  // buttonElement.classList.add("form__submit_inactive");
 };
 
 export { enableValidation, clearValidation };
