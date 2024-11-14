@@ -3,6 +3,9 @@ import { createCard, deleteCard, isLiked, cardtemplate } from "./card";
 import { initialCards } from "./cards";
 import { openModal, closeModal } from "./modal";
 import { enableValidation, clearValidation } from "./validation";
+import { getUserData, initialCardsRender, editProfile, addNewCard } from "./api";
+
+
 
 const cardPlace = document.querySelector(".places__list");
 const popupCloseList = document.querySelectorAll(".popup__close");
@@ -29,10 +32,13 @@ const popupInputCardName = document.querySelector(
 const popupInputCardLink = document.querySelector(".popup__input_type_url");
 const popupAddNewCard = document.querySelector(".popup_type_new-card");
 
+
+
 // Вывести карточки на страницу
 initialCards.forEach((item) =>
-  cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
-);
+    cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
+  );
+
 
 // Добавляем новую карточку
 
@@ -122,6 +128,14 @@ popupList.forEach((element) => {
 
 //Валидация
 
-
-
 enableValidation();
+
+
+//API 
+
+
+getUserData()
+initialCardsRender()
+editProfile()
+addNewCard()
+
