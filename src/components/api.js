@@ -1,16 +1,16 @@
 const token = "18e2bdec-08eb-442f-8281-54235c56275e";
-const cohort = "pwff-cohort-1";
 
-// const config = {
-//     baseUrl: 'https://nomoreparties.co/v1/pwff-cohort-1',
-//     headers: {
-//       authorization: token,
-//       'Content-Type': 'application/json'
-//     }
-//   }
+
+const config = {
+    baseUrl: 'https://nomoreparties.co/v1/pwff-cohort-1',
+    headers: {
+      authorization: token,
+      'Content-Type': 'application/json'
+    }
+  }
 
 const getUserData = () => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me", {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "GET",
     headers: {
       authorization: token,
@@ -20,7 +20,7 @@ const getUserData = () => {
 };
 
 const editProfile = (name, job) => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/users/me ", {
+  return fetch(`${config.baseUrl}/users/me`, {
     method: "PATCH",
     headers: {
       authorization: token,
@@ -34,7 +34,7 @@ const editProfile = (name, job) => {
 };
 
 const initialCardsRender = () => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/cards", {
+  return fetch(`${config.baseUrl}/cards`, {
     method: "GET",
     headers: {
       authorization: token,
@@ -44,7 +44,7 @@ const initialCardsRender = () => {
 };
 
 const addNewCard = (name, link) => {
-  return fetch("https://nomoreparties.co/v1/pwff-cohort-1/cards", {
+  return fetch(`${config.baseUrl}/pwff-cohort-1/cards`, {
     method: "POST",
     headers: {
       authorization: token,
@@ -59,7 +59,7 @@ const addNewCard = (name, link) => {
 
 
 const deleteMyCard = (cardId) => {
-    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/${cardId}`,{
+    return fetch(`${config.baseUrl}/pwff-cohort-1/cards/${cardId}`,{
         method: 'DELETE',
         headers: {
             authorization: token,
@@ -70,7 +70,7 @@ const deleteMyCard = (cardId) => {
 
 
 const putLike = (cardId) => {
-    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
         method: 'PUT',
         headers: {
             authorization: token,
@@ -81,7 +81,7 @@ const putLike = (cardId) => {
 
 
 const deleteLike = (cardId) => {
-    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/cards/likes/${cardId}`, {
+    return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
         headers: {
             authorization: token,
@@ -91,19 +91,19 @@ const deleteLike = (cardId) => {
 }
 
 
-const updateUserAvatar = (link) => {
-    return fetch(`https://nomoreparties.co/v1/pwff-cohort-1/users/me/avatar`, {
-        method: 'PATCH',
-        headers: {
-            authorization: token,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            avatar: link,
-          }),
-    })
-}
 
+const updateUserAvatar = (link) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: "PATCH",
+    headers: {
+      authorization: token,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      avatar: link,
+    }),
+  });
+};
 
 
 
