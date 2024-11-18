@@ -175,24 +175,27 @@ avatar.addEventListener("click", function (evt) {
   openModal(popupAvatarUpdate);
 });
 
-// function createAvatar(evt) {
-//   evt.preventDefault()
-//   const avatarInput = document.querySelector(".popup__input_type_avatar");
-//   renderLoading(true);
-//   updateUserAvatar(avatarInput)
-//     .then((res) => {
-//       if (res.ok) {
-//         return res.json();
-//       }
-//     })
-//     .then((data) => {
-//       console.log(data)
-//     })
-//     .catch((err) => console.log(err))
-//     .finally(() => renderLoading(false));
-// }
+function createAvatar(evt) {
+  evt.preventDefault()
+  const avatarInput = document.querySelector(".popup__input_type_avatar");
+  const link = avatarInput.value;
+  renderLoading(true);
+  updateUserAvatar(link)
+    .then((res) => {
+      console.log('link',link)
+      if (res.ok) {
+        return res.json();
+      }
+    })
+    .then((data) => {
+      avatar.src = data.avatar;
+      console.log('data.avatar', data.avatar, avatar.src)
+    })
+    .catch((err) => console.log(err))
+    .finally(() => renderLoading(false));
+}
 
-// popupAvatarUpdate.addEventListener("submit", createAvatar);
+popupAvatarUpdate.addEventListener("submit", createAvatar);
 
 const avatarInput = document.querySelector(".popup__input_type_avatar");
 
