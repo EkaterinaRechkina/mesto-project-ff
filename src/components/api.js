@@ -44,7 +44,7 @@ const initialCardsRender = () => {
 };
 
 const addNewCard = (name, link) => {
-  return fetch(`${config.baseUrl}/pwff-cohort-1/cards`, {
+  return fetch(`${config.baseUrl}/cards`, {
     method: "POST",
     headers: {
       authorization: token,
@@ -59,7 +59,7 @@ const addNewCard = (name, link) => {
 
 
 const deleteMyCard = (cardId) => {
-    return fetch(`${config.baseUrl}/pwff-cohort-1/cards/${cardId}`,{
+    return fetch(`${config.baseUrl}/cards/${cardId}`,{
         method: 'DELETE',
         headers: {
             authorization: token,

@@ -44,17 +44,19 @@ const popupInputCardName = document.querySelector(
 //Задание данных в профиле
 
 function createUser() {
+  let userID;
   getUserData()
     .then((res) => {
       if (res.ok) {
         return res.json();
       }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((data) => {
       profileTitle.textContent = data.name;
       profileDescription.textContent = data.about;
       avatar.src = data.avatar;
-      // console.log(data._id); //ID user
+      userID = data._id;
     })
     .catch((err) => console.log(err));
 }
@@ -73,6 +75,7 @@ function profileHandler(evt) {
       if (res.ok) {
         return res.json();
       }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((res) => {
       profileTitle.textContent = res.name;
@@ -90,6 +93,7 @@ initialCardsRender()
     if (res.ok) {
       return res.json();
     }
+    return Promise.reject(`Ошибка: ${res.status}`);
   })
   .then((data) => {
     data.forEach((card) => {
@@ -98,30 +102,39 @@ initialCardsRender()
   })
   .catch((err) => console.log(err));
 
-// initialCards.forEach((item) =>
-//   cardPlace.append(createCard(item, deleteCard, isLiked, openCard))
-// );
+//Promise all Данные из профиля + инициализация карточек
+
+Promise.all([createUser, initialCardsRender])
+  .then((resUser, resCard) => {
+    console.log(resUser, resCard);
+  })
+  .catch((err) => console.log(err));
 
 // Добавляем новую карточку
 
 function createNewCard(evt) {
   evt.preventDefault();
   renderLoading(true);
-  const newCardEl = {
-    name: popupInputCardName.value,
-    link: popupInputCardLink.value,
-  };
+  const name = popupInputCardName.value;
+  const link = popupInputCardLink.value;
 
-  addNewCard(newCardEl.name, newCardEl.link)
+  addNewCard(name, link)
     .then((res) => {
       if (res.ok) {
         return res.json();
       }
+      console.log(name, link);
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((data) => {
+      const newCardEl = {
+        name: data.name,
+        link: data.link,
+      };
       const newCard = createCard(newCardEl, deleteCard, isLiked, openCard);
       cardPlace.prepend(newCard);
     })
+    .catch((err) => console.log(err))
     .finally(() => renderLoading(false));
 
   closeModal(popupAddNewCard);
@@ -176,31 +189,27 @@ avatar.addEventListener("click", function (evt) {
 });
 
 function createAvatar(evt) {
-  evt.preventDefault()
+  evt.preventDefault();
+  renderLoading(true);
   const avatarInput = document.querySelector(".popup__input_type_avatar");
   const link = avatarInput.value;
-  renderLoading(true);
   updateUserAvatar(link)
     .then((res) => {
-      console.log('link',link)
+      console.log("link", link);
       if (res.ok) {
         return res.json();
       }
+      return Promise.reject(`Ошибка: ${res.status}`);
     })
     .then((data) => {
-      avatar.src = data.avatar;
-      console.log('data.avatar', data.avatar, avatar.src)
+      avatar.style.backgroundImage = `url(${data.avatar})`;
     })
     .catch((err) => console.log(err))
     .finally(() => renderLoading(false));
+  closeModal(popupAvatarUpdate);
 }
 
 popupAvatarUpdate.addEventListener("submit", createAvatar);
-
-const avatarInput = document.querySelector(".popup__input_type_avatar");
-
-console.log(updateUserAvatar(avatarInput))
-
 
 //Закрытие popup
 
