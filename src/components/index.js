@@ -7,9 +7,6 @@ import {
   initialCardsRender,
   editProfile,
   addNewCard,
-  deleteMyCard,
-  putLike,
-  deleteLike,
   updateUserAvatar,
 } from "./api";
 
@@ -46,12 +43,6 @@ const popupInputCardName = document.querySelector(
 function createUser() {
   let userID;
   getUserData()
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((data) => {
       profileTitle.textContent = data.name;
       profileDescription.textContent = data.about;
@@ -72,12 +63,6 @@ function profileHandler(evt) {
   const jobInput = inputProfileDescription.value;
   editProfile(nameInput, jobInput)
     .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
-    .then((res) => {
       profileTitle.textContent = res.name;
       profileDescription.textContent = res.about;
     })
@@ -86,31 +71,8 @@ function profileHandler(evt) {
   closeModal(popupProfileEdit);
 }
 
-// Вывести карточки на страницу
-
-initialCardsRender()
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((data) => {
-    data.forEach((card) => {
-      cardPlace.append(createCard(card, deleteCard, isLiked, openCard));
-    });
-  })
-  .catch((err) => console.log(err));
-
-//Promise all Данные из профиля + инициализация карточек
-
-Promise.all([createUser, initialCardsRender])
-  .then((resUser, resCard) => {
-    console.log(resUser, resCard);
-  })
-  .catch((err) => console.log(err));
-
 // Добавляем новую карточку
+let myUserId;
 
 function createNewCard(evt) {
   evt.preventDefault();
@@ -119,19 +81,18 @@ function createNewCard(evt) {
   const link = popupInputCardLink.value;
 
   addNewCard(name, link)
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      console.log(name, link);
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((data) => {
       const newCardEl = {
         name: data.name,
         link: data.link,
       };
-      const newCard = createCard(newCardEl, deleteCard, isLiked, openCard);
+      const newCard = createCard(
+        newCardEl,
+        deleteCard,
+        isLiked,
+        openCard,
+        myUserId
+      );
       cardPlace.prepend(newCard);
     })
     .catch((err) => console.log(err))
@@ -149,6 +110,31 @@ function openCard(card) {
   popupCaptionCard.textContent = card.name;
   openModal(popupCard);
 }
+
+//Promise all Данные из профиля + инициализация карточек
+
+Promise.all([getUserData(), initialCardsRender()])
+  .then(([userInfo, cards]) => {
+    profileTitle.textContent = userInfo.name;
+    profileDescription.textContent = userInfo.about;
+    avatar.style.backgroundImage = `url('${userInfo.avatar}')`;
+    myUserId = userInfo._id;
+    cards.forEach((cardData) => {
+      // console.log(cardData)
+      const card = createCard(
+        cardData,
+        deleteCard,
+        isLiked,
+        openCard,
+        myUserId
+      );
+      console.log("card", card);
+      cardPlace.append(card);
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 // Обработчики
 
@@ -194,13 +180,6 @@ function createAvatar(evt) {
   const avatarInput = document.querySelector(".popup__input_type_avatar");
   const link = avatarInput.value;
   updateUserAvatar(link)
-    .then((res) => {
-      console.log("link", link);
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка: ${res.status}`);
-    })
     .then((data) => {
       avatar.style.backgroundImage = `url(${data.avatar})`;
     })
