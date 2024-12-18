@@ -1,7 +1,10 @@
 import "../pages/index.css";
-import { createCard, deleteCard, isLiked, cardtemplate } from "./card";
+import { createCard, deleteCard, isLiked } from "./card";
 import { openModal, closeModal } from "./modal";
-import { enableValidation, clearValidation } from "./validation";
+import {
+  enableValidation,
+  clearValidation,
+} from "./validation";
 import {
   getUserData,
   initialCardsRender,
@@ -9,6 +12,17 @@ import {
   addNewCard,
   updateUserAvatar,
 } from "./api";
+
+const validationConfig = { 
+  formSelector: ".popup__form", 
+  inputSelector: ".popup__input", 
+  submitButtonSelector: ".popup__button", 
+  inactiveButtonClass: "popup__button_disabled", 
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: "popup__error_visible", 
+
+}; 
+
 
 //POPUP
 const cardPlace = document.querySelector(".places__list");
@@ -38,22 +52,6 @@ const popupInputCardName = document.querySelector(
   ".popup__input_type_card-name"
 );
 
-//Задание данных в профиле
-
-function createUser() {
-  let userID;
-  getUserData()
-    .then((data) => {
-      profileTitle.textContent = data.name;
-      profileDescription.textContent = data.about;
-      avatar.src = data.avatar;
-      userID = data._id;
-    })
-    .catch((err) => console.log(err));
-}
-
-createUser();
-
 // Обновление информации в профиле и закрытие модального окна
 
 function profileHandler(evt) {
@@ -82,17 +80,7 @@ function createNewCard(evt) {
 
   addNewCard(name, link)
     .then((data) => {
-      const newCardEl = {
-        name: data.name,
-        link: data.link,
-      };
-      const newCard = createCard(
-        newCardEl,
-        deleteCard,
-        isLiked,
-        openCard,
-        myUserId
-      );
+      const newCard = createCard(data, deleteCard, isLiked, openCard, myUserId);
       cardPlace.prepend(newCard);
     })
     .catch((err) => console.log(err))
@@ -120,7 +108,6 @@ Promise.all([getUserData(), initialCardsRender()])
     avatar.style.backgroundImage = `url('${userInfo.avatar}')`;
     myUserId = userInfo._id;
     cards.forEach((cardData) => {
-      // console.log(cardData)
       const card = createCard(
         cardData,
         deleteCard,
@@ -128,7 +115,6 @@ Promise.all([getUserData(), initialCardsRender()])
         openCard,
         myUserId
       );
-      console.log("card", card);
       cardPlace.append(card);
     });
   })
@@ -141,7 +127,7 @@ Promise.all([getUserData(), initialCardsRender()])
 //Открываем модальное окно для редактирования профиля
 
 profileEditBtn.addEventListener("click", function (evt) {
-  clearValidation(profileEditForm);
+  clearValidation(profileEditForm, validationConfig);
   evt.preventDefault();
   inputProfileName.value = profileTitle.textContent;
   inputProfileDescription.value = profileDescription.textContent;
@@ -156,7 +142,7 @@ profileEditForm.addEventListener("submit", profileHandler);
 
 cardAddBtn.addEventListener("click", function (evt) {
   evt.preventDefault;
-  clearValidation(cardAddForm);
+  clearValidation(cardAddForm, validationConfig);
   popupInputCardName.value = "";
   popupInputCardLink.value = "";
   openModal(popupAddNewCard);
@@ -211,15 +197,11 @@ popupList.forEach((element) => {
 
 //Валидация
 
-enableValidation();
+enableValidation(validationConfig);
 
 //Загрузка данных в форме
 
 function renderLoading(isLoading) {
   const buttonSubmit = document.querySelector(".popup__button");
-  if (isLoading) {
-    buttonSubmit.textContent = "Сохранение...";
-  } else {
-    buttonSubmit.textContent = "Сохранить";
-  }
+  buttonSubmit.textContent = isLoading ? "Сохранение..." : "Сохранить";
 }

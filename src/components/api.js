@@ -8,6 +8,13 @@ const config = {
   },
 };
 
+function handleResponse(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
 const getUserData = () => {
   return fetch(`${config.baseUrl}/users/me`, {
     method: "GET",
@@ -16,10 +23,7 @@ const getUserData = () => {
       "Content-Type": "application/json",
     },
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -35,10 +39,7 @@ const editProfile = (name, job) => {
       about: job,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -50,10 +51,7 @@ const initialCardsRender = () => {
       "Content-Type": "application/json",
     },
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -69,10 +67,7 @@ const addNewCard = (name, link) => {
       link: link,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -84,10 +79,7 @@ const deleteMyCard = (cardId) => {
       "Content-Type": "application/json",
     },
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -99,10 +91,7 @@ const putLike = (cardId) => {
       "Content-Type": "application/json",
     },
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -114,10 +103,7 @@ const deleteLike = (cardId) => {
       "Content-Type": "application/json",
     },
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
@@ -132,10 +118,7 @@ const updateUserAvatar = (link) => {
       avatar: link,
     }),
   }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return handleResponse(res);
   });
 };
 
